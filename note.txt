@@ -1,0 +1,12 @@
+Task
+- API untuk komisi masing2 marketing dengan output sesuai omset
+- output berupa table hasil perhitungan dengan kebutuhan kolom sesuai soal
+- buat table pembayaran dengan fungsi untuk melakukan pembayaran secara kredit
+- buat API pembayaran
+
+
+Server (Backend)
+
+
+
+Client (Frontend)
