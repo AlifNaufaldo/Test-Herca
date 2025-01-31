@@ -10,3 +10,7 @@ Server (Backend)
 
 
 Client (Frontend)
+
+
+Tambahan
+- Penambahan kolom pada table penjualan untuk otomatisasi API pembayaran

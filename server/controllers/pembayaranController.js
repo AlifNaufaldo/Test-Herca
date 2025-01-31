@@ -4,42 +4,57 @@ const createPayment = async (req, res) => {
   try {
     const { penjualanId, amountPaid, paymentDate } = req.body;
 
-    // Cari data penjualan berdasarkan ID
+    // Cari transaksi penjualan
     const penjualan = await Penjualan.findByPk(penjualanId);
     if (!penjualan) {
       return res.status(404).json({ success: false, message: "Penjualan tidak ditemukan" });
     }
 
-    // Hitung sisa saldo
-    const remainingBalance = penjualan.grandTotal - amountPaid;
-    const paymentStatus = remainingBalance === 0 ? "paid" : "unpaid";
+    // Pastikan sisa saldo masih ada
+    if (penjualan.remainingBalance === 0) {
+      return res.status(400).json({ success: false, message: "Tagihan sudah lunas" });
+    }
 
-    // Simpan pembayaran
+    // Pastikan jumlah pembayaran tidak lebih dari sisa saldo
+    if (amountPaid > penjualan.remainingBalance) {
+      return res.status(400).json({ success: false, message: "Jumlah pembayaran melebihi sisa tagihan" });
+    }
+
+    // Hitung sisa saldo setelah pembayaran
+    const newRemainingBalance = penjualan.remainingBalance - amountPaid;
+    const paymentStatus = newRemainingBalance === 0 ? "paid" : "unpaid";
+
+    // Simpan pembayaran ke tabel Pembayaran
     const pembayaran = await Pembayaran.create({
       penjualanId,
       amountPaid,
       paymentDate,
-      remainingBalance,
+      remainingBalance: newRemainingBalance,
       paymentStatus,
     });
 
+    // Update remainingBalance di tabel Penjualan
+    await penjualan.update({ remainingBalance: newRemainingBalance });
+
     res.status(201).json({
       success: true,
-      message: "Pembayaran berhasil dibuat",
+      message: "Pembayaran berhasil",
       data: pembayaran,
     });
   } catch (error) {
-    console.log("🚀 ~ createPayment ~ error:", error)
+    console.log("🚀 ~ createPayment ~ error:", error);
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
 const getAllPayments = async (req, res) => {
   try {
-    const payments = await Pembayaran.findAll({ include: { model: Penjualan } });
+    const payments = await Pembayaran.findAll({
+      include: { model: Penjualan, attributes: ["grandTotal", "remainingBalance"] },
+    });
     res.json({ success: true, data: payments });
   } catch (error) {
-    console.log("🚀 ~ getAllPayments ~ error:", error)
+    console.log("🚀 ~ getAllPayments ~ error:", error);
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
@@ -47,7 +62,9 @@ const getAllPayments = async (req, res) => {
 const getPaymentById = async (req, res) => {
   try {
     const { id } = req.params;
-    const payment = await Pembayaran.findByPk(id, { include: { model: Penjualan } });
+    const payment = await Pembayaran.findByPk(id, {
+      include: { model: Penjualan, attributes: ["grandTotal", "remainingBalance"] },
+    });
 
     if (!payment) {
       return res.status(404).json({ success: false, message: "Pembayaran tidak ditemukan" });
@@ -55,7 +72,7 @@ const getPaymentById = async (req, res) => {
 
     res.json({ success: true, data: payment });
   } catch (error) {
-    console.log("🚀 ~ getPaymentById ~ error:", error)
+    console.log("🚀 ~ getPaymentById ~ error:", error);
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
@@ -73,7 +90,7 @@ const updatePaymentStatus = async (req, res) => {
     await payment.update({ paymentStatus });
     res.json({ success: true, message: "Status pembayaran diperbarui", data: payment });
   } catch (error) {
-    console.log("🚀 ~ updatePaymentStatus ~ error:", error)
+    console.log("🚀 ~ updatePaymentStatus ~ error:", error);
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
@@ -90,7 +107,7 @@ const deletePayment = async (req, res) => {
     await payment.destroy();
     res.json({ success: true, message: "Pembayaran berhasil dihapus" });
   } catch (error) {
-    console.log("🚀 ~ deletePayment ~ error:", error)
+    console.log("🚀 ~ deletePayment ~ error:", error);
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
