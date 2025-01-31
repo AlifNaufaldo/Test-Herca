@@ -12,10 +12,12 @@ app.use(express.json());
 // Import routes
 const penjualanRoutes = require("./routes/penjualanRoutes");
 const marketingRoutes = require("./routes/marketing");
+const pembayaranRoutes = require("./routes/pembayaranRoutes")
 
 // routes
 app.use("/penjualan", penjualanRoutes);
 app.use("/marketing", marketingRoutes);
+app.use("/pembayaran", pembayaranRoutes)
 
 // Test route
 app.get("/", (req, res) => {

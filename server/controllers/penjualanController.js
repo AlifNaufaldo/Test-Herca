@@ -10,7 +10,7 @@ const getAllPenjualan = async (req, res) => {
     });
     res.json(penjualans);
   } catch (error) {
-    console.error(error);
+    console.log("🚀 ~ getAllPenjualan ~ error:", error)
     res.status(500).json({ message: 'Internal Server Error' });
   }
 };

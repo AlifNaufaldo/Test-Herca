@@ -48,7 +48,7 @@ const getMarketingCommissions = async (req, res) => {
       data: formattedResults,
     });
   } catch (error) {
-    console.error(error);
+    console.log("🚀 ~ getMarketingCommissions ~ error:", error)
     res.status(500).json({
       success: false,
       message: "Server error",
