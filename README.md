@@ -1,4 +1,4 @@
-# My Web Application
+# Web Application
 
 This is a full-stack web application built with Express.js, Sequelize, and PostgreSQL for the backend, and Next.js with TypeScript for the frontend.
 
