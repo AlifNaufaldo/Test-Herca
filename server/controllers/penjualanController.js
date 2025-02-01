@@ -15,4 +15,14 @@ const getAllPenjualan = async (req, res) => {
   }
 };
 
-module.exports = { getAllPenjualan };
+const getAllTransaksi = async (req, res) => {
+  try {
+    const penjualans = await Penjualan.findAll();
+    res.json(penjualans);
+  } catch (error) {
+    console.log("🚀 ~ getAllPenjualan ~ error:", error)
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+module.exports = { getAllPenjualan, getAllTransaksi };

@@ -3,7 +3,7 @@ const {
   createPayment,
   getAllPayments,
   getPaymentById,
-  updatePaymentStatus,
+  updatePaymentAmount,
   deletePayment,
 } = require("../controllers/pembayaranController");
 
@@ -12,7 +12,7 @@ const router = express.Router();
 router.post("/", createPayment);
 router.get("/", getAllPayments);
 router.get("/:id", getPaymentById);
-router.put("/:id", updatePaymentStatus);
+router.put("/:id", updatePaymentAmount);
 router.delete("/:id", deletePayment);
 
 module.exports = router;

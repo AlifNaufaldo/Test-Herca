@@ -56,4 +56,24 @@ const getMarketingCommissions = async (req, res) => {
   }
 };
 
-module.exports = { getMarketingCommissions };
+
+const getMarketingNameList = async (req, res) => {
+  try {
+    const results = await Marketing.findAll({
+      attributes: ["id", "name"],
+    });
+
+    res.json({
+      success: true,
+      data: results,
+    });
+  } catch (error) {
+    console.log("🚀 ~ getMarketingNameList ~ error:", error)
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+}
+
+module.exports = { getMarketingCommissions, getMarketingNameList };

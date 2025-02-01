@@ -6,7 +6,7 @@ Task
 
 
 Server (Backend)
-
+-penyesuaian table berdsaarkan bulan
 
 
 Client (Frontend)
