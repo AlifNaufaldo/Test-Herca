@@ -63,11 +63,11 @@ npm run dev
 
 ---
 
-## Project Structure
+## Project Structure and Tech Stack
 ```
 repo-root/
-│── server/         
-│── client/         
+│── server/         # Backend (Express, Sequelize, PostgreSQL)
+│── client/         # Frontend (Next.js, React, TailwindCSS)
 ```
 
 ## Scripts
@@ -87,23 +87,22 @@ repo-root/
 
 ---
 
-## Tech Stack
+## API Routes
 
-### Backend
-- `Express.js`
-- `Sequelize`
-- `PostgreSQL`
-- `express-validator`
-- `cors`
-- `dotenv`
+### Penjualan
+- `GET /penjualan/` - Get all sales
+- `GET /penjualan/transaksi` - Get all transactions
 
-### Frontend
-- `Next.js`
-- `React`
-- `React-DOM`
-- `Axios`
-- `SweetAlert2`
-- `TailwindCSS`
+### Marketing
+- `GET /marketing/` - Get marketing commissions
+- `GET /marketing/commission` - Get marketing commissions
+
+### Pembayaran
+- `POST /pembayaran/` - Create a new payment
+- `GET /pembayaran/` - Get all payments
+- `GET /pembayaran/:id` - Get payment by ID
+- `PUT /pembayaran/:id` - Update payment amount
+- `DELETE /pembayaran/:id` - Delete a payment
 
 ---
 
